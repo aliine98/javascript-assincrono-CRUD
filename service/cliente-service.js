@@ -12,11 +12,19 @@ const criaNovaLinha = (nome, email) => {
    return linhaNovoCliente;
 }
 
-const http = new XMLHttpRequest();
 
-http.open('GET', 'http://localhost:3000/profile');
-http.send();
+const listaClientes = () => {
+   const tabela = document.querySelector('[data-tabela]');
 
-http.onload = () => {
-   const data = http.response;
+   const http = new XMLHttpRequest();
+
+   http.open('GET', 'http://localhost:3000/profile');
+   http.send();
+
+   http.onload = () => {
+      const data = JSON.parse(http.response);
+      data.forEach(elemento => {
+         tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email));
+      });
+   }
 }
