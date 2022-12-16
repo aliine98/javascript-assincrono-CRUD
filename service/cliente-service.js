@@ -12,19 +12,27 @@ const criaNovaLinha = (nome, email) => {
    return linhaNovoCliente;
 }
 
+const tabela = document.querySelector('[data-tabela]');
 
 const listaClientes = () => {
-   const tabela = document.querySelector('[data-tabela]');
+   const promise = new Promise((resolve, reject) => {
+      const http = new XMLHttpRequest();
+      http.open('GET', 'http://localhost:3000/profile');
+      http.send();
 
-   const http = new XMLHttpRequest();
-
-   http.open('GET', 'http://localhost:3000/profile');
-   http.send();
-
-   http.onload = () => {
-      const data = JSON.parse(http.response);
-      data.forEach(elemento => {
-         tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email));
-      });
-   }
+      http.onload = () => {
+         if (http.status >= 400) {
+            reject(JSON.parse(http.response));
+         } else {
+            resolve(JSON.parse(http.response));
+         }
+      }
+   });
+   return promise;
 }
+
+listaClientes().then((data) => {
+   data.forEach(elemento => {
+      tabela.appendChild(criaNovaLinha(elemento.nome, elemento.email));
+   });
+});
