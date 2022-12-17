@@ -19,19 +19,31 @@ const tabela = document.querySelector('[data-tabela]');
 tabela.addEventListener('click', async (evento) => {
    let ehBotaoExcluir = evento.target.className === 'botao-simples botao-simples--excluir';
    if (ehBotaoExcluir) {
-      const linhaCliente = evento.target.closest('[data-id]');
-      let id = linhaCliente.dataset.id;
-      await clienteService.removeCliente(id);
-      linhaCliente.remove();
+      try {
+         const linhaCliente = evento.target.closest('[data-id]');
+         let id = linhaCliente.dataset.id;
+         await clienteService.removeCliente(id);
+         linhaCliente.remove();
+      }
+      catch (erro) {
+         console.log(erro);
+         window.location.href = '../telas/erro.html'
+      }
    }
 });
 
 
 const render = async () => {
-   const listaClientes = await clienteService.listaClientes();
-   listaClientes.forEach(cliente => {
-      tabela.appendChild(criaNovaLinha(cliente.nome, cliente.email, cliente.id));
-   });
+   try {
+      const listaClientes = await clienteService.listaClientes();
+      listaClientes.forEach(cliente => {
+         tabela.appendChild(criaNovaLinha(cliente.nome, cliente.email, cliente.id));
+      });
+   }
+   catch (erro) {
+      console.log(erro);
+      window.location.href = '../telas/erro.html'
+   }
 }
 
 render();
