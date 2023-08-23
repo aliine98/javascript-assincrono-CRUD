@@ -1,10 +1,15 @@
 # JS na web: crud com JavaScript assíncrono
 
-abrir a pasta no vscode e
-rodar o json server:
+Instale o json-server:
 
-```js
+```bash
+npm install -g json-server
+```
+
+Inicie o servidor:
+
+```bash
 json-server --watch db.json
 ```
 
-Rodar: browser-sync start --server --file . --host --port 5000 --startPath telas/lista_cliente.html
+Abra o arquivo `lista_cliente.html` no navegador ou use a extensão Live Server do VsCode para visualizar as páginas.
